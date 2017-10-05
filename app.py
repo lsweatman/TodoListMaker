@@ -11,7 +11,7 @@ app.secret_key = "jasddbhA4576GJLKDSHHOAUI.3KSDFH_75"
 
 DEBUG = True
 PORT = 8000
-HOST = '0.0.0.0'
+HOST = '127.0.0.1'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -19,10 +19,10 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    try:
-        return models.User.get(models.User.id == user_id)
-    except models.DoesNotExist:
-        return None
+	try:
+		return models.User.get(models.User.id == user_id)
+	except models.DoesNotExist:
+		return None
 
 @app.before_request
 def before_request():
@@ -41,12 +41,12 @@ def signup():
 	if form.validate_on_submit():
 		flash("You've successfully registered!", "success")
 		models.User.create_user(
-            username=form.username.data,
-            email=form.email.data,
-            password=form.password.data
-        )
+			username=form.username.data,
+			email=form.email.data,
+			password=form.password.data
+		)
 		return redirect(url_for('index'))
-   	return render_template('signup.html', form=form)
+	return render_template('signup.html', form=form)
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -127,7 +127,7 @@ def check_task():
 	print(type(data))
 	itemTocheck = models.Todo.get(models.Todo.id == data)
 	item_status = itemTocheck.is_done
-	print type(item_status)
+	print(type(item_status))
 	itemUpdate = models.Todo.update(is_done = (item_status==False)).where(models.Todo.id == data)
 	print(models.Todo.get(models.Todo.id == data).is_done)
 	itemUpdate.execute()
@@ -138,7 +138,7 @@ def check_task():
 def del_task(user_id, task_id):
 	itemToDel = models.Todo.delete().where(models.Todo.id == task_id)
 	itemToDel.execute()
-	return redirect(url_for('main', user_id=user_id))       	
+	return redirect(url_for('main', user_id=user_id))	   	
 
 @app.route('/')
 def index():
